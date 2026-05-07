@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.habbo.entrypoints=https"
       - "traefik.http.routers.habbo.tls.certresolver=letsencrypt"
       # MUDAMOS DE 5154 PARA 8080
-      - "traefik.http.services.habbo.loadbalancer.server.port=8080" 
+      - "traefik.http.services.habbo.loadbalancer.server.port=5154" 
       - "traefik.http.routers.habbo.service=habbo"
       - "traefik.http.services.habbo.loadbalancer.passhostheader=true"
     ports:
