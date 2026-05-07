@@ -56,6 +56,8 @@ services:
       - "traefik.http.routers.assets.tls.certresolver=letsencrypt"
       - "traefik.http.routers.assets.service=assets-service"
       - "traefik.http.services.assets-service.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.assets-strip.stripprefix.prefixes=/gamedata,/gordon,/bundled"
+      - "traefik.http.routers.assets.middlewares=assets-strip"
     ports:
       - 1080:5154
       - 9080:8080
