@@ -22,12 +22,12 @@ services:
       - 3001:3001
       - 2096:2096
     labels:
-          - "traefik.enable=true"
-          - "traefik.tcp.routers.arcturus-ws.rule=HostSNI(`*`)"
-          - "traefik.tcp.routers.arcturus-ws.entrypoints=https"
-          - "traefik.tcp.routers.arcturus-ws.service=arcturus-ws-svc"
-          - "traefik.tcp.routers.arcturus-ws.tls=true"
-          - "traefik.tcp.services.arcturus-ws-svc.loadbalancer.server.port=3000"
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.arcturus-ws.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.arcturus-ws.entrypoints=https"
+      - "traefik.tcp.routers.arcturus-ws.service=arcturus-ws-svc"
+      - "traefik.tcp.routers.arcturus-ws.tls=true"
+      - "traefik.tcp.services.arcturus-ws-svc.loadbalancer.server.port=3000"
     depends_on:
       - mysql
     networks:
@@ -44,17 +44,19 @@ services:
       - volume-nitro-react-node-modules:/app/nitro-react/node_modules
     labels:
       - "traefik.enable=true"
-      # SITE PRINCIPAL
+      # SITE PRINCIPAL (PORTA 5154)
       - "traefik.http.routers.habbo.rule=Host(`habbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.habbo.entrypoints=https"
       - "traefik.http.routers.habbo.tls.certresolver=letsencrypt"
-      - "traefik.http.services.habbo.loadbalancer.server.port=5154"
+      - "traefik.http.routers.habbo.service=habbo-site"
+      - "traefik.http.services.habbo-site.loadbalancer.server.port=5154"
 
-      # ASSETS (SUBDOMÍNIO DEDICADO)
+      # ASSETS (PORTA 8080)
       - "traefik.http.routers.assets.rule=Host(`assets.habbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.assets.entrypoints=https"
       - "traefik.http.routers.assets.tls.certresolver=letsencrypt"
-      - "traefik.http.services.assets-service.loadbalancer.server.port=8080"
+      - "traefik.http.routers.assets.service=habbo-assets"
+      - "traefik.http.services.habbo-assets.loadbalancer.server.port=8080"
     ports:
       - 1080:5154
       - 9080:8080
