@@ -8,6 +8,6 @@ RUN apk add mysql-client
 RUN apk add supervisor
 RUN apk add rsync
 
-RUN yarn global add http-server
+RUN npm install -g http-server
 
 RUN yarn install
