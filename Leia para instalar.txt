@@ -43,4 +43,9 @@ import { defineConfig } from 'vite';
             })
 
 acessar  nano nitro/configuration/nitro-react/public/renderer-config.json
-e mudar todas as  urls localhost para sua
+e mudar todas as  urls localhost para sua, ex: 
+    "socket.url": "wss://habbo.aplicacoescompartilhadas.vps-kinghost.net",
+    "asset.url": "https://habbo.aplicacoescompartilhadas.vps-kinghost.net",
+    "image.library.url": "https://habbo.aplicacoescompartilhadas.vps-kinghost.net/gordon/production/",
+    "hof.furni.url": "https://habbo.aplicacoescompartilhadas.vps-kinghost.net/gordon/production/hof_furni/",
+
