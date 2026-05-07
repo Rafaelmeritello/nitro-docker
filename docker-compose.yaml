@@ -37,11 +37,13 @@ services:
       - volume-nitro-react-node-modules:/app/nitro-react/node_modules
     labels:
       - "traefik.enable=true"
-      # Usando o subdomínio 'habbo' no seu domínio principal
       - "traefik.http.routers.habbo.rule=Host(`habbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.habbo.entrypoints=https"
       - "traefik.http.routers.habbo.tls.certresolver=letsencrypt"
-      - "traefik.http.services.habbo.loadbalancer.server.port=5154"
+      # MUDAMOS DE 5154 PARA 8080
+      - "traefik.http.services.habbo.loadbalancer.server.port=8080" 
+      - "traefik.http.routers.habbo.service=habbo"
+      - "traefik.http.services.habbo.loadbalancer.passhostheader=true"
     ports:
       - 1080:5154
       - 9080:8080
