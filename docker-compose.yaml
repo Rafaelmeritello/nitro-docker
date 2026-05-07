@@ -12,7 +12,7 @@ services:
     container_name: arcturus
     build:
       context: emulator
-    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
+    entrypoint: ["/bin/sh", "/app/scripts/build.sh"]
     volumes:
       - ./emulator/:/app/
       - volume-arcturus-target:/app/arcturus/target
@@ -24,24 +24,30 @@ services:
     depends_on:
       - mysql
     networks:
-      nitro:
+      - coolify
 
   nitro:
     container_name: nitro
     build:
       context: nitro
-    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
+    entrypoint: ["/bin/sh", "/app/scripts/build.sh"]
     volumes:
       - ./nitro/:/app/
       - volume-nitro-converter-node-modules:/app/nitro-converter/node_modules
       - volume-nitro-react-node-modules:/app/nitro-react/node_modules
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.habbo.rule=Host(`habbo.da-silva.ovh`)"
+      - "traefik.http.routers.habbo.entrypoints=https"
+      - "traefik.http.routers.habbo.tls.certresolver=letsencrypt"
+      - "traefik.http.services.habbo.loadbalancer.server.port=5154"
     ports:
       - 1080:5154
-      - 8080:8080
+      - 9080:8080
       - 8081:8081
     networks:
-      nitro:
-
+      - coolify
+      
   mysql:
     container_name: mysql
     image: mariadb:10.6
@@ -58,7 +64,8 @@ services:
     ports:
       - 13306:3306
     networks:
-      nitro:
+      - coolify
 
 networks:
-  nitro:
+  coolify:
+    external: true
