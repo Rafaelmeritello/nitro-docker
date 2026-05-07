@@ -1,8 +1,17 @@
-arcturus:
+version: '3.7'
+
+volumes:
+  volume-mysql:
+  volume-arcturus-maven-repo:
+  volume-arcturus-target:
+  volume-nitro-converter-node-modules:
+  volume-nitro-react-node-modules:
+
+services:
+  arcturus:
     container_name: arcturus
     build:
       context: emulator
-    # Usando string pura para evitar erro de sintaxe
     entrypoint: /bin/sh -c "sleep 5 && /bin/sh /app/scripts/build.sh"
     volumes:
       - ./emulator/:/app/
@@ -22,7 +31,6 @@ arcturus:
     build:
       context: nitro
     user: root
-    # Adicionei um 'ls' para debug e o comando em string pura
     entrypoint: /bin/sh -c "wget -qO- https://just.systems/install.sh | sh -s -- --to /usr/local/bin && just install && just extract-nitro-assets && /bin/sh /app/scripts/build.sh"
     volumes:
       - ./nitro/:/app/
@@ -34,3 +42,24 @@ arcturus:
       - 8081:8081
     networks:
       - nitro
+
+  mysql:
+    container_name: mysql
+    image: mariadb:10.6
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=arcturus_root_pw
+      - MYSQL_USER=arcturus_user
+      - MYSQL_PASSWORD=arcturus_pw
+      - MYSQL_DATABASE=arcturus
+    volumes:
+      - volume-mysql:/var/lib/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/dumps:/docker-entrypoint-initdb.d
+    ports:
+      - 13306:3306
+    networks:
+      - nitro
+
+networks:
+  nitro:
