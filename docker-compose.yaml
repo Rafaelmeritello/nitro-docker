@@ -44,20 +44,17 @@ services:
       - volume-nitro-react-node-modules:/app/nitro-react/node_modules
     labels:
       - "traefik.enable=true"
+      # SITE PRINCIPAL
       - "traefik.http.routers.habbo.rule=Host(`habbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.habbo.entrypoints=https"
       - "traefik.http.routers.habbo.tls.certresolver=letsencrypt"
-      # MUDAMOS DE 5154 PARA 8080
-      - "traefik.http.services.habbo.loadbalancer.server.port=5154" 
-      - "traefik.http.routers.habbo.service=habbo"
-      - "traefik.http.services.habbo.loadbalancer.passhostheader=true"
-      - "traefik.http.routers.assets.rule=Host(`assets.aplicacoescompartilhadas.vps-kinghost.net` || `habbo.aplicacoescompartilhadas.vps-kinghost.net`) && PathPrefix(`/gamedata`, `/gordon`, `/bundled`)"
+      - "traefik.http.services.habbo.loadbalancer.server.port=5154"
+
+      # ASSETS (SUBDOMÍNIO DEDICADO)
+      - "traefik.http.routers.assets.rule=Host(`assets.habbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.assets.entrypoints=https"
       - "traefik.http.routers.assets.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.assets.service=assets-service"
       - "traefik.http.services.assets-service.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.assets-strip.stripprefix.prefixes=/gamedata,/gordon,/bundled"
-      - "traefik.http.routers.assets.middlewares=assets-strip"
     ports:
       - 1080:5154
       - 9080:8080
