@@ -26,7 +26,7 @@ services:
       - "traefik.http.routers.arcturus-ws.rule=Host(`wshabbo.aplicacoescompartilhadas.vps-kinghost.net`)"
       - "traefik.http.routers.arcturus-ws.entrypoints=websecure"
       - "traefik.http.routers.arcturus-ws.tls=true"
-      - "traefik.http.routers.arcturus-ws.tls.certresolver=myresolver"
+      - "traefik.http.routers.arcturus-ws.tls.certresolver=letsencrypt"
       - "traefik.http.services.arcturus-ws-svc.loadbalancer.server.port=3001" # Porta interna do WS do seu Arcturus
     depends_on:
       - mysql
