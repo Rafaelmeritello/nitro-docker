@@ -12,7 +12,7 @@ services:
     container_name: arcturus
     build:
       context: emulator
-    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
+    entrypoint: ["/bin/sh", "/app/scripts/build.sh"]
     volumes:
       - ./emulator/:/app/
       - volume-arcturus-target:/app/arcturus/target
@@ -24,13 +24,15 @@ services:
     depends_on:
       - mysql
     networks:
-      nitro:
+      - nitro
 
   nitro:
     container_name: nitro
     build:
       context: nitro
-    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
+    # Adicionei permissão de root para garantir que o wget e o just funcionem
+    user: root
+    entrypoint: ["/bin/sh", "-c", "wget -qO- https://just.systems/install.sh | sh -s -- --to /usr/local/bin && just install && just extract-nitro-assets && /bin/sh /app/scripts/build.sh"]
     volumes:
       - ./nitro/:/app/
       - volume-nitro-converter-node-modules:/app/nitro-converter/node_modules
@@ -40,7 +42,7 @@ services:
       - 8080:8080
       - 8081:8081
     networks:
-      nitro:
+      - nitro
 
   mysql:
     container_name: mysql
@@ -58,7 +60,7 @@ services:
     ports:
       - 13306:3306
     networks:
-      nitro:
+      - nitro
 
 networks:
   nitro:
