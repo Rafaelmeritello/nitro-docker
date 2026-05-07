@@ -30,7 +30,7 @@ services:
     container_name: nitro
     build:
       context: nitro
-    # Adicionei permissão de root para garantir que o wget e o just funcionem
+   
     user: root
     entrypoint: ["/bin/sh", "-c", "wget -qO- https://just.systems/install.sh | sh -s -- --to /usr/local/bin && just install && just extract-nitro-assets && /bin/sh /app/scripts/build.sh"]
     volumes:
