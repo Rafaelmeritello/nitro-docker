@@ -49,3 +49,5 @@ e mudar todas as  urls localhost para sua, ex:
     "image.library.url": "https://habbo.aplicacoescompartilhadas.vps-kinghost.net/gordon/production/",
     "hof.furni.url": "https://habbo.aplicacoescompartilhadas.vps-kinghost.net/gordon/production/hof_furni/",
 
+alterar também de UiTexts para ExternalTexts
+
