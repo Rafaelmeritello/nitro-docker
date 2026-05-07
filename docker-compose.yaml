@@ -12,7 +12,7 @@ services:
     container_name: arcturus
     build:
       context: emulator
-    entrypoint: /bin/sh -c "sleep 5 && /bin/sh /app/scripts/build.sh"
+    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
     volumes:
       - ./emulator/:/app/
       - volume-arcturus-target:/app/arcturus/target
@@ -24,24 +24,23 @@ services:
     depends_on:
       - mysql
     networks:
-      - nitro
+      nitro:
 
   nitro:
     container_name: nitro
     build:
       context: nitro
-    user: root
-    entrypoint: /bin/sh -c "wget -qO- https://just.systems/install.sh | sh -s -- --to /usr/local/bin && just install && just extract-nitro-assets && /bin/sh /app/scripts/build.sh"
+    entrypoint: ["/bin/sh","/app/scripts/build.sh"]
     volumes:
       - ./nitro/:/app/
       - volume-nitro-converter-node-modules:/app/nitro-converter/node_modules
       - volume-nitro-react-node-modules:/app/nitro-react/node_modules
     ports:
       - 1080:5154
-      - 9080:8080
+      - 8080:8080
       - 8081:8081
     networks:
-      - nitro
+      nitro:
 
   mysql:
     container_name: mysql
@@ -59,7 +58,7 @@ services:
     ports:
       - 13306:3306
     networks:
-      - nitro
+      nitro:
 
 networks:
   nitro:
