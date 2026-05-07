@@ -23,11 +23,11 @@ services:
       - 2096:2096
     labels:
       - "traefik.enable=true"
-      - "traefik.tcp.routers.arcturus-ws.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.arcturus-ws.entrypoints=https"
-      - "traefik.tcp.routers.arcturus-ws.service=arcturus-ws-svc"
-      - "traefik.tcp.routers.arcturus-ws.tls=true"
-      - "traefik.tcp.services.arcturus-ws-svc.loadbalancer.server.port=3000"
+      - "traefik.http.routers.arcturus-ws.rule=Host(`wshabbo.aplicacoescompartilhadas.vps-kinghost.net`)"
+      - "traefik.http.routers.arcturus-ws.entrypoints=websecure"
+      - "traefik.http.routers.arcturus-ws.tls=true"
+      - "traefik.http.routers.arcturus-ws.tls.certresolver=myresolver"
+      - "traefik.http.services.arcturus-ws-svc.loadbalancer.server.port=3001" # Porta interna do WS do seu Arcturus
     depends_on:
       - mysql
     networks:
