@@ -21,6 +21,13 @@ services:
       - 3000:3000
       - 3001:3001
       - 2096:2096
+    labels:
+          - "traefik.enable=true"
+          - "traefik.tcp.routers.arcturus-ws.rule=HostSNI(`*`)"
+          - "traefik.tcp.routers.arcturus-ws.entrypoints=https"
+          - "traefik.tcp.routers.arcturus-ws.service=arcturus-ws-svc"
+          - "traefik.tcp.routers.arcturus-ws.tls=true"
+          - "traefik.tcp.services.arcturus-ws-svc.loadbalancer.server.port=3000"
     depends_on:
       - mysql
     networks:
@@ -44,6 +51,11 @@ services:
       - "traefik.http.services.habbo.loadbalancer.server.port=5154" 
       - "traefik.http.routers.habbo.service=habbo"
       - "traefik.http.services.habbo.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.assets.rule=Host(`assets.aplicacoescompartilhadas.vps-kinghost.net` || `habbo.aplicacoescompartilhadas.vps-kinghost.net`) && PathPrefix(`/gamedata`, `/gordon`, `/bundled`)"
+      - "traefik.http.routers.assets.entrypoints=https"
+      - "traefik.http.routers.assets.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.assets.service=assets-service"
+      - "traefik.http.services.assets-service.loadbalancer.server.port=8080"
     ports:
       - 1080:5154
       - 9080:8080
